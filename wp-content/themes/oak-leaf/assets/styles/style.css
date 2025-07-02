@@ -57,7 +57,13 @@ h1 {
 	}
 }
 
-
+.privacy-policy, .page-template-page-general {
+  background: transparent !important;
+  a {
+    color: #a57c37;
+    text-decoration: underline;
+  }
+}
 
 /*
 input:focus,
