@@ -49,7 +49,7 @@ h1 {
 }
 
 
-.page-id-135247 table tr, .page-id-135247 table td {font-family: mrs-eaves,serif;font-weight: 400;font-style: normal;outline: none;font-size: 1.1rem;}
+.page-id-135247 table tr, .page-id-135247 table td {font-family: mrs-eaves,serif;font-weight: 400;font-style: normal;outline: none;font-size: 1.1rem; background: #ffffff !important;}
 
 @media all and (min-width:320px) and (max-width:750px) {
 	.page-id-135247 td, .page-id-135247 td p, .page-id-135247 td ul li, .page-id-135247 td a {
