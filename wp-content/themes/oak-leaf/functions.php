@@ -82,3 +82,31 @@ function acf_add_allowed_iframe_tag( $tags, $context ) {
 
 // Remove ACF unsafe HTML notice 
 add_filter( 'acf/admin/prevent_escaped_html_notice', '__return_true' );
+
+/**
+ * Insert the Cookiebot "Do Not Sell Or Share My Personal Information"
+ * link in the footer legal menu, immediately after the Privacy Policy item.
+ * Idempotent: won't insert twice.
+ */
+add_filter( 'wp_nav_menu_items', 'oak_leaf_cookiebot_footer_link', 10, 2 );
+function oak_leaf_cookiebot_footer_link( $items, $args ) {
+	if ( ! isset( $args->theme_location ) || 'footer-links' !== $args->theme_location ) {
+		return $items;
+	}
+	if ( false !== strpos( $items, 'ct-cookiebot-preferences-link' ) ) {
+		return $items;
+	}
+
+	$cookiebot_item = '<li class="menu-item"><a href="#" id="ct-cookiebot-preferences-link">Do Not Sell Or Share My Personal Information</a></li>';
+
+	$privacy_pos = strpos( $items, 'privacy-policy' );
+	if ( false !== $privacy_pos ) {
+		$end_li = strpos( $items, '</li>', $privacy_pos );
+		if ( false !== $end_li ) {
+			$end_li += strlen( '</li>' );
+			return substr( $items, 0, $end_li ) . $cookiebot_item . substr( $items, $end_li );
+		}
+	}
+
+	return $items . $cookiebot_item;
+}

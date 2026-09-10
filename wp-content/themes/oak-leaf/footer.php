@@ -30,5 +30,40 @@
 			</div>  <!-- end .off-canvas-content -->
 		</div> <!-- end .off-canvas-wrapper -->
 		<?php wp_footer(); ?>
+
+		<!-- cookie-consent-script v1 -->
+		<script id="CookieDeclaration" src="https://consent.cookiebot.com/8f9ecdb2-c40e-411a-aa50-87ab7a77297d/cd.js" type="text/javascript" async></script>
+		<script>
+		// Cookiebot "Do Not Sell Or Share My Personal Information" link -> native preferences dialog
+		(function () {
+			function clickDetails(tries) {
+				var candidates = document.querySelectorAll(
+					'#CybotCookiebotDialog button, #CybotCookiebotDialog [role="button"], #CybotCookiebotDialog a'
+				);
+				for (var i = 0; i < candidates.length; i++) {
+					var el = candidates[i];
+					var txt = (el.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+					if (txt === 'details' || txt.indexOf('see details') > -1 || txt.indexOf('show details') > -1) {
+						var rect = el.getBoundingClientRect();
+						if (rect.width > 0 && rect.height > 0) { el.click(); return; }
+					}
+				}
+				if (tries > 0) { setTimeout(function () { clickDetails(tries - 1); }, 500); }
+			}
+			function openCookiebot() {
+				if (window.Cookiebot && typeof window.Cookiebot.renew === 'function') {
+					window.Cookiebot.renew();
+					setTimeout(function () { clickDetails(6); }, 400);
+				} else {
+					setTimeout(openCookiebot, 300);
+				}
+			}
+			document.addEventListener('click', function (event) {
+				var link = event.target.closest('#ct-cookiebot-preferences-link');
+				if (link) { event.preventDefault(); openCookiebot(); }
+			});
+		})();
+		</script>
+		<!-- /cookie-consent-script v1 -->
 	</body>
 </html> <!-- end page -->
