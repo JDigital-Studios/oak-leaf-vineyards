@@ -29,7 +29,7 @@
 				</footer> <!-- end .footer -->
 			</div>  <!-- end .off-canvas-content -->
 		</div> <!-- end .off-canvas-wrapper -->
-		<?php if ( ! empty( $twg_legal_popups ) ) : ?>
+		<?php if ( class_exists( 'TWG_Legal_Plugin' ) ) : ?>
 		<?php
 		$twg_legal_settings = get_option( 'twg_legal_settings', array() );
 		$twg_legal_site     = ! empty( $twg_legal_settings['legal_name'] ) ? $twg_legal_settings['legal_name'] : 'Oak Leaf Vineyards';
