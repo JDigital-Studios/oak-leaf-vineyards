@@ -29,6 +29,22 @@
 				</footer> <!-- end .footer -->
 			</div>  <!-- end .off-canvas-content -->
 		</div> <!-- end .off-canvas-wrapper -->
+		<?php if ( ! empty( $twg_legal_popups ) ) : ?>
+		<?php
+		$twg_legal_settings = get_option( 'twg_legal_settings', array() );
+		$twg_legal_site     = ! empty( $twg_legal_settings['legal_name'] ) ? $twg_legal_settings['legal_name'] : 'Oak Leaf Vineyards';
+		$twg_legal_email    = ! empty( $twg_legal_settings['legal_email_domain'] ) ? $twg_legal_settings['legal_email_domain'] : 'oakleafvineyards';
+		?>
+		<!-- Hidden TWG Legal popup containers, hydrated by the twg-legal plugin SDK.
+		     The link inside each body slot is a fallback that stays in place if the
+		     SDK never runs, so the age-gate links are never dead. -->
+		<div class="legal-popup-content" id="twg-terms-popup" data-twg-legal-popup data-legal-slug="terms-of-service" data-legal-site="<?php echo esc_attr( $twg_legal_site ); ?>" data-legal-emaildomain="<?php echo esc_attr( $twg_legal_email ); ?>">
+			<div data-twg-legal-popup-body><p><a href="<?php echo esc_url( home_url( '/terms-conditions/' ) ); ?>">Terms of Service</a></p></div>
+		</div>
+		<div class="legal-popup-content" id="twg-privacy-popup" data-twg-legal-popup data-legal-slug="privacy-policy" data-legal-site="<?php echo esc_attr( $twg_legal_site ); ?>" data-legal-emaildomain="<?php echo esc_attr( $twg_legal_email ); ?>">
+			<div data-twg-legal-popup-body><p><a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>">Privacy Policy</a></p></div>
+		</div>
+		<?php endif; ?>
 		<?php wp_footer(); ?>
 
 		<!-- cookie-consent-script v1 -->

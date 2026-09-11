@@ -1,3 +1,20 @@
+<?php
+/**
+ * TWG Legal integration.
+ *
+ * When the twg-legal plugin is active the age-gate legal links open the
+ * plugin-hydrated legal popups (see the containers in footer.php) so the
+ * popup copy always comes from the TWG legal JSON API. Without the plugin
+ * they fall back to the legacy static legal documents, exactly as before.
+ */
+$twg_legal_popups = class_exists( 'TWG_Legal_Plugin' );
+$twg_terms_attrs  = $twg_legal_popups
+	? 'href="#twg-terms-popup" data-fancybox data-type="inline" data-src="#twg-terms-popup"'
+	: 'data-fancybox data-type="iframe" data-src="/terms-of-service.html"';
+$twg_privacy_attrs = $twg_legal_popups
+	? 'href="#twg-privacy-popup" data-fancybox data-type="inline" data-src="#twg-privacy-popup"'
+	: 'data-fancybox data-type="iframe" data-src="/privacy-policy.html"';
+?>
 <!doctype html>
   <html class="no-js"  <?php language_attributes(); ?>>
 	<head>
@@ -25,6 +42,20 @@
 		<script src="<?php echo get_template_directory_uri(); ?>/assets/scripts/contact.js"></script>
 		<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/fancybox/jquery.fancybox.css">
         <script src="<?php echo get_template_directory_uri(); ?>/fancybox/jquery.fancybox.min.js"></script>
+		<script>
+		/* Fancybox defaults for the age-gate legal popups.
+		   Fancybox renders its "small button" close X inside the content, which
+		   scrolls out of view on a legal document thousands of pixels tall. The
+		   toolbar variant lives in .fancybox-container (fixed to the viewport),
+		   so the close X stays visible while the document scrolls. */
+		jQuery(function($) {
+			if ($.fancybox && $.fancybox.defaults) {
+				$.fancybox.defaults.toolbar = true;
+				$.fancybox.defaults.buttons = ['close'];
+				$.fancybox.defaults.smallBtn = false;
+			}
+		});
+		</script>
 		<script>(function(d){var s = d.createElement("script");s.setAttribute("data-account", "OQBfWXhU5x");s.setAttribute("src", "https://cdn.userway.org/widget.js");(d.body || d.head).appendChild(s);})(document)</script><noscript>Please ensure Javascript is enabled for purposes of <a href="https://userway.org">website accessibility</a></noscript>
 	<script>
 		jQuery(function($) {
@@ -73,7 +104,7 @@
 					modal_content = jQuery('<div id="modal_content" style="display:none" role="dialog" aria-modal="true"></div>');
 					var modal_content_wrapper = jQuery('<div id="modal_content_wrapper" class="content_wrapper"></div>');
 					var modal_regret_wrapper = jQuery('<div id="modal_regret_wrapper" class="content_wrapper" style="display:none;"></div>');
-					var content_agegate = jQuery('<img src="/wp-content/themes/oak-leaf/assets/images/logotype.svg" alt="Oak Leaf Vineyards" title="Oak Leaf Vineyards"><span class="seperator-bar">&nbsp;</span><label for="agree" class="show-for-sr">I agree to the Terms of Service and Privacy Policy</label><input type="checkbox" id="agree" required name="agree" role="tab" aria-selected="true" tabindex="1"></input> I agree to the <a data-fancybox data-type="iframe" data-src="/terms-of-service.html" aria-disabled="true">Terms of Service</a> and <a data-fancybox data-type="iframe" data-src="/privacy-policy.html" aria-disabled="true">Privacy Policy</a></p><h1>Are You of Legal Drinking Age?</h1><nav><ul><li><a href="#" class="av_btn av_go" rel="yes" id="yes" role="tab" tabindex="2">Yes</a></li><li><a href="#" class="av_btn av_no" rel="no" id="no" role="tab" tabindex="3">No</a></li></nav><article class="caption"><p role="heading">You must be at least 21 years old to view this site.<br> By clicking “yes” you affirm that you are at least 21 years old.</p><p>You can learn more about how we use cookies by reviewing our <a style="text-decoration: underline;" data-fancybox="" data-type="iframe" data-src="/privacy-policy.html">Privacy Policy</a></p><small style="margin-top: 20px;">&copy; <?php echo Date("Y"); ?> Oak Leaf Vineyards, Ripon, CA</small><span class="seperator-bar">&nbsp;</span>');
+					var content_agegate = jQuery('<img src="/wp-content/themes/oak-leaf/assets/images/logotype.svg" alt="Oak Leaf Vineyards" title="Oak Leaf Vineyards"><span class="seperator-bar">&nbsp;</span><label for="agree" class="show-for-sr">I agree to the Terms of Service and Privacy Policy</label><input type="checkbox" id="agree" required name="agree" role="tab" aria-selected="true" tabindex="1"></input> I agree to the <a <?php echo $twg_terms_attrs; ?> aria-disabled="true">Terms of Service</a> and <a <?php echo $twg_privacy_attrs; ?> aria-disabled="true">Privacy Policy</a></p><h1>Are You of Legal Drinking Age?</h1><nav><ul><li><a href="#" class="av_btn av_go" rel="yes" id="yes" role="tab" tabindex="2">Yes</a></li><li><a href="#" class="av_btn av_no" rel="no" id="no" role="tab" tabindex="3">No</a></li></nav><article class="caption"><p role="heading">You must be at least 21 years old to view this site.<br> By clicking “yes” you affirm that you are at least 21 years old.</p><p>You can learn more about how we use cookies by reviewing our <a style="text-decoration: underline;" <?php echo $twg_privacy_attrs; ?>>Privacy Policy</a></p><small style="margin-top: 20px;">&copy; <?php echo Date("Y"); ?> Oak Leaf Vineyards, Ripon, CA</small><span class="seperator-bar">&nbsp;</span>');
 					var regret_text = jQuery('<h2>You must be 21 years of age or older to view this site.</h2>');
 					modal_content_wrapper.append(content_agegate);
 					modal_regret_wrapper.append(regret_text);
