@@ -47,8 +47,10 @@
 		<?php endif; ?>
 		<?php wp_footer(); ?>
 
-		<!-- cookie-consent-script v1 -->
-		<script id="CookieDeclaration" src="https://consent.cookiebot.com/8f9ecdb2-c40e-411a-aa50-87ab7a77297d/cd.js" type="text/javascript" async></script>
+		<!-- cookie-consent-script v1 — footer "Do Not Sell Or Share My Personal Information"
+		     handler only. The Cookiebot declaration script (cd.js) is deliberately NOT
+		     loaded here: it injected the whole cookie declaration inline underneath the
+		     footer on every page. Put it on a dedicated cookie-policy page if needed. -->
 		<script>
 		// Cookiebot "Do Not Sell Or Share My Personal Information" link -> native preferences dialog
 		(function () {
