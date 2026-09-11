@@ -962,50 +962,67 @@ PLUGIN STYLES
    headings, gold hairline rule under the page title.
    ============================================================ */
 
-/* --- Standalone legal pages (twg-legal templates) --- */
+/* --- Standalone legal pages (twg-legal templates) ---
+   Mirrors the staging rendering of the General Page Template: full-width
+   rows, a centred 970px content column (10-of-12 with grid gutters), the
+   page title, a full-bleed gold hairline rule, then Last Updated + copy. */
 #legal-page {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
+  max-width: none;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0;
 }
 
-/* 10-of-12 centred column, same as .cell.small-10.small-offset-1 */
+/* 10-of-12 centred column, same as .cell.small-10.small-offset-1
+   (1000px box incl. the 15px grid gutters = 970px of copy) */
 #legal-page > * {
   box-sizing: border-box;
   width: 100%;
-  max-width: 970px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 /* the plugin renders the Last Updated slot before the title; the design is
    title -> gold rule -> Last Updated -> body copy */
 #legal-page #legal-title {
   order: 1;
-  margin: 10vh auto 8px;
+  margin: 10vh auto 0.5rem;
   text-align: center;
 }
 
+/* the General Page Template title cell is text-center large-text-left */
+@media screen and (min-width: 1024px) {
+  #legal-page #legal-title { text-align: left; }
+}
+
 #legal-page #legal-last-updated {
-  order: 2;
+  order: 3;
   margin: 10vh auto 1rem;
   font-size: 0.88rem;
 }
 
 #legal-page #legal-content {
-  order: 3;
+  order: 4;
   margin: 0 auto 10vh;
 }
 
-/* gold hairline rule under the page title (same as .seperator-bar-alt) */
-#legal-page #legal-title::after {
+/* gold hairline rule between the title and the copy. It is a flex item of
+   #legal-page (order 2) rather than a child of the 970px title column, so it
+   spans the full row exactly like .seperator-bar-alt inside a full-width
+   <section> on the General Page Template. */
+#legal-page::after {
   content: "";
+  order: 2;
   display: block;
+  flex: 0 0 auto;
+  width: 100%;
   height: 10px;
-  margin-top: 8px;
+  margin: 10vh 0 0;
   border-top: 1px solid #a57c37;
   border-bottom: 1px solid #a57c37;
 }
